@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import Any = jasmine.Any;
 
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
@@ -13,6 +14,8 @@ export class SalesforceRESTcalloutServiceService {
   readonly redirect_uri: string;
   readonly httpOptions: object;
   readonly requestPayload: object;
+
+  private scopeParameters: Array<string> = ['full'];
 
   constructor(private http: HttpClient) {
     this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
@@ -43,5 +46,17 @@ export class SalesforceRESTcalloutServiceService {
 
   sendAuthRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
     return this.http.post<Object>(this.authorizationURL, '').pipe();
+  }
+
+  sete():Any {
+    return new Promise((resolve, reject) => {
+
+      let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
+        + '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
+        '&redirect_uri=' + this.redirect_uri
+        + '&response_type=token&scope=' + this.scopeParameters.join('%20');
+
+      window.open(loginWindowURL, '_blank', 'location=no');
+    });
   }
 }
