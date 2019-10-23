@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import Any = jasmine.Any;
 
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
@@ -48,8 +47,8 @@ export class SalesforceRESTcalloutServiceService {
     return this.http.post<Object>(this.authorizationURL, '').pipe();
   }
 
-  sete():Any {
-    return new Promise((resolve, reject) => {
+  testMethod() {
+    (new Promise((resolve, reject) => {
 
       let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
         + '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
@@ -59,6 +58,6 @@ export class SalesforceRESTcalloutServiceService {
       window.open(loginWindowURL, '_blank', 'location=no');
 
       resolve(window.URL);
-    });
+    })).then(() => console.log(window.URL));
   }
 }
