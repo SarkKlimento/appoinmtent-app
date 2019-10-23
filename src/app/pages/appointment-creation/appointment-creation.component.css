@@ -1,0 +1,21 @@
+.container {
+  text-align: center;
+  background-color: rgba(187, 224, 255, 0.44);
+}
+
+.container-error {
+  text-align: center;
+  background-color: #ff9801;
+}
+
+.container p, .container-error p {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+}
+
+@media only screen and (min-width: 600px) {
+  .left-side-element {
+    float: right;
+    clear: both;
+  }
+}

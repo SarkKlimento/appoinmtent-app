@@ -1,0 +1,41 @@
+<div class="ui-g">
+  <div class="ui-g-12 container">
+    <p>{{headerString}}</p>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-6 ui-sm-12">
+      <div>
+        <input type="text" pInputText placeholder="{{firstNameString}}" [(ngModel)]="firstName"
+               (ngModelChange)="clearErrorMessage()" class="left-side-element">
+      </div>
+      <div>
+        <p-calendar placeholder="{{appointmentDateString}}" [(ngModel)]="appointmentDate"
+                    (ngModelChange)="clearErrorMessage()" class="left-side-element"></p-calendar>
+      </div>
+      <div>
+        <p-calendar placeholder="{{startTimeString}}" [(ngModel)]="startTime" [timeOnly]="true"
+                    (ngModelChange)="clearErrorMessage()" class="left-side-element"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-6 ui-sm-12">
+      <div>
+        <input type="text" pInputText placeholder="{{secondNameString}}" [(ngModel)]="secondName"
+               (ngModelChange)="clearErrorMessage()">
+      </div>
+      <div>
+        <input type="text" pInputText placeholder="{{accountNameString}}" [(ngModel)]="accountName"
+               (ngModelChange)="clearErrorMessage()">
+      </div>
+      <div>
+        <p-calendar placeholder="{{endTimeString}}" [(ngModel)]="endTime" [timeOnly]="true"
+                    (ngModelChange)="clearErrorMessage()"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="errorText" class="ui-g-12 container-error">
+    <p>{{errorText}}</p>
+  </div>
+  <div class="ui-g-12 container">
+    <p-button label="{{buttonString}}" (onClick)="handleClick($event)"></p-button>
+  </div>
+</div>
