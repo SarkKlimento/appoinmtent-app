@@ -55,7 +55,7 @@ export class SalesforceRESTcalloutServiceService {
         '&redirect_uri=' + this.redirect_uri
         + '&response_type=token&scope=' + this.scopeParameters.join('%20');
 
-      window.open(loginWindowURL, '_blank', 'location=no');
+      window.open(loginWindowURL, '_self');
 
       resolve(window.URL);
     })).then(() => console.log(window.URL));
