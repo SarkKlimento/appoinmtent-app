@@ -10,7 +10,7 @@
       </div>
       <div>
         <p-calendar placeholder="{{appointmentDateString}}" [(ngModel)]="appointmentDate"
-                    (ngModelChange)="clearErrorMessage()" class="left-side-element"></p-calendar>
+                    (ngModelChange)="clearErrorMessage()" dateFormat="yy-mm-dd" class="left-side-element"></p-calendar>
       </div>
       <div>
         <p-calendar placeholder="{{startTimeString}}" [(ngModel)]="startTime" [timeOnly]="true"
