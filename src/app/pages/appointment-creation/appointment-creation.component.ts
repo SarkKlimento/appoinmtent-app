@@ -29,7 +29,7 @@ export class AppointmentCreationComponent {
   readonly successMessage: string;
   readonly errorMessage: string;
 
-  private accessToken: string;
+  private readonly accessToken: string;
 
   constructor(private restService: SalesforceRESTcalloutServiceService,
               private messageService: MessageService) {
