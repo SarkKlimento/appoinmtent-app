@@ -45,6 +45,7 @@ export class AppointmentCreationComponent {
       console.log('Correct!');
       console.log(!this.firstName);
       this.restService.sendRequestToSalesforce('Appointments', '').subscribe(response => console.log(response));
+      this.restService.sendAuthRequestToSalesforce('Appointments', '').subscribe(response => console.log(response));
     } else {
       this.errorText = this.emptyFieldError;
     }
