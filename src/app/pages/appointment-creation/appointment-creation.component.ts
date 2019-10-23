@@ -32,7 +32,7 @@ export class AppointmentCreationComponent {
   constructor(private restService: SalesforceRESTcalloutServiceService) {
     this.accessToken = restService.getToken();
 
-    if (this.accessToken || this.accessToken.length === 0) {
+    if (this.accessToken || (this.accessToken != null && this.accessToken.length === 0)) {
       restService.authorize();
       this.accessToken = restService.getToken();
     }
