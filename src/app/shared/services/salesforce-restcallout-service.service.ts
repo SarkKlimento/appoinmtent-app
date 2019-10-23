@@ -13,10 +13,10 @@ export class SalesforceRESTcalloutServiceService {
   readonly requestPayload: object;
 
   constructor(private http: HttpClient) {
-    this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsbzB6Vc8qn0HIvu1sHodUXFw7oh2LgzRbr2zMZh_0nw_x0NomONhd1dJPbSFx";
+    this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
     this.authorizationEndpoint = 'https://login.salesforce.com/services/oauth2/authorize';
     this.baseEndpoint = 'https://sark-klimento-dev-ed.lightning.force.com/services/apexrest/';
-    this.redirect_uri = 'http://localhost:4200/';
+    this.redirect_uri = 'https://sark-appointment-app.herokuapp.com/';
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
