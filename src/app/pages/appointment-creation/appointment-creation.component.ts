@@ -59,8 +59,8 @@ export class AppointmentCreationComponent {
         '"client_first_name": "' + this.firstName + '",' +
         '"client_last_name": "' + this.lastName + '",' +
         '"appointment_date": "' + this.appointmentDate + '",' +
-        '"start_time": "' + this.startTime + '",' +
-        '"end_time": "' + this.endTime + '",' +
+        '"start_time": "' + this.startTime.hours + ':' + this.startTime.minutes + '",' +
+        '"end_time": "' + this.endTime.hours + ':' + this.endTime.minutes + '",' +
         '"account_name": "' + this.accountName + '"' +
         '}', this.accessToken).subscribe(response => {
         if (response['Status'] === 'Sucess') {
