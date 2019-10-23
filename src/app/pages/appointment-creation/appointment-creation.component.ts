@@ -31,12 +31,11 @@ export class AppointmentCreationComponent {
 
   constructor(private restService: SalesforceRESTcalloutServiceService) {
     this.accessToken = restService.getToken();
-    console.log(this.accessToken);
 
-    /*if (this.accessToken ===  null || this.accessToken === undefined || this.accessToken.length === 0) {
+    if (this.accessToken ===  null || this.accessToken === undefined || this.accessToken.length === 0) {
       restService.authorize();
       this.accessToken = restService.getToken();
-    }*/
+    }
 
     this.headerString = 'Please, enter information below!';
     this.firstNameString = 'First Name';
