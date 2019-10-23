@@ -53,6 +53,7 @@ export class AppointmentCreationComponent {
     if (this.checkDataValidation()) {
       console.log('Correct!');
       console.log(!this.firstName);
+      console.log(this.accessToken);
       this.restService.sendRequestToSalesforce('Appointments', '{' +
         '"client_first_name": "John",' +
         '"client_last_name": "Doe",' +
