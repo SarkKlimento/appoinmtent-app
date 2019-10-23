@@ -50,8 +50,6 @@ export class AppointmentCreationComponent {
   }
 
   handleClick(event: Event): void {
-    this.restService.authorize();
-
     if (this.checkDataValidation()) {
       console.log('Correct!');
       console.log(!this.firstName);
