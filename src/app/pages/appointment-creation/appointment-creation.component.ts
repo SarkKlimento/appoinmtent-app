@@ -63,7 +63,7 @@ export class AppointmentCreationComponent {
         '"end_time": "' + this.endTime.hours + ':' + this.endTime.minutes + '",' +
         '"account_name": "' + this.accountName + '"' +
         '}', this.accessToken).subscribe(response => {
-        if (response['Status'] === 'Sucess') {
+        if (response['Status'] === 'Success') {
           this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
           this.firstName = '';
           this.lastName = '';
