@@ -24,12 +24,11 @@ export class SalesforceRESTcalloutServiceService {
       })
     };
     this.requestPayload = {
-      "response_type": "code",
+      "grant_type":"password",
       "client_id": this.consumerKey,
       "client_secret" : "FCDE3C6C3E628271D9D8C494CF5D7D5007659DBDF9135881ADC7980FFD0BC30A",
       "username" : "sarkklimento@senla.eu",
-      "password" : "misha1410261ISJSVYn84obc8BEnpEr3Al5uF",
-      "redirect_uri": this.redirect_uri
+      "password" : "misha1410261ISJSVYn84obc8BEnpEr3Al5uF"
     };
   }
 
