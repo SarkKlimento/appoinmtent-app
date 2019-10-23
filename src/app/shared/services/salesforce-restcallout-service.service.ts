@@ -35,8 +35,10 @@ export class SalesforceRESTcalloutServiceService {
       "password": "misha1410261ISJSVYn84obc8BEnpEr3Al5uF",
       "redirect_uri": this.redirect_uri
     };
-    this.authorizationURL = "https://login.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g" +
-      "&client_secret=FCDE3C6C3E628271D9D8C494CF5D7D5007659DBDF9135881ADC7980FFD0BC30A&username=sarkklimento@senla.eu&password=misha1410261ISJSVYn84obc8BEnpEr3Al5uF";
+    this.authorizationURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
+      + '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
+      '&redirect_uri=' + this.redirect_uri
+      + '&response_type=token&scope=' + this.scopeParameters.join('%20');
   }
 
   sendRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
@@ -44,21 +46,6 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   sendAuthRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
-    this.testMethod();
     return this.http.post<Object>(this.authorizationURL, '').pipe();
-  }
-
-  testMethod() {
-    (new Promise((resolve, reject) => {
-
-      let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
-        + '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
-        '&redirect_uri=' + this.redirect_uri
-        + '&response_type=token&scope=' + this.scopeParameters.join('%20');
-
-      window.open(loginWindowURL, '_blank', 'location=no');
-
-      resolve(window.URL);
-    })).then(() => console.log(window.URL));
   }
 }
