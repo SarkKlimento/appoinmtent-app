@@ -24,7 +24,7 @@ export class SalesforceRESTcalloutServiceService {
       })
     };
     this.requestPayload = {
-      "response_type": "token",
+      "response_type": "code",
       "client_id": this.consumerKey,
       "redirect_uri": this.redirect_uri
     };
