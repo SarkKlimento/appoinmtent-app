@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Time} from '@angular/common';
 import {SalesforceRESTcalloutServiceService} from '../../shared/services/salesforce-restcallout-service.service';
 import {MessageService} from 'primeng/api';
 
@@ -12,8 +11,8 @@ export class AppointmentCreationComponent {
   firstName: string;
   lastName: string;
   appointmentDate: Date;
-  startTime: Time;
-  endTime: Time;
+  startTime: Date;
+  endTime: Date;
   accountName: string;
   errorText: string;
 
@@ -58,11 +57,13 @@ export class AppointmentCreationComponent {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
         '"client_first_name": "' + this.firstName + '",' +
         '"client_last_name": "' + this.lastName + '",' +
-        '"appointment_date": "' + this.appointmentDate + '",' +
-        '"start_time": "' + this.startTime.hours + ':' + this.startTime.minutes + '",' +
-        '"end_time": "' + this.endTime.hours + ':' + this.endTime.minutes + '",' +
+        '"appointment_date": "' + this.appointmentDate.getFullYear() + '-' + this.appointmentDate.getMonth() + '-' +
+        this.appointmentDate.getDay() + '-' + '",' +
+        '"start_time": "' + this.startTime.getHours() + ':' + this.startTime.getMinutes() + '",' +
+        '"end_time": "' + this.endTime.getHours() + ':' + this.endTime.getMinutes() + '",' +
         '"account_name": "' + this.accountName + '"' +
-        '}', this.accessToken).subscribe(response => {
+        '}', this.accessToken
+      ).subscribe(response => {
         if (response['Status'] === 'Success') {
           this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
           this.firstName = '';
