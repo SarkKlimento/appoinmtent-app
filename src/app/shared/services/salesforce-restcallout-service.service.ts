@@ -57,6 +57,8 @@ export class SalesforceRESTcalloutServiceService {
         + '&response_type=token&scope=' + this.scopeParameters.join('%20');
 
       window.open(loginWindowURL, '_blank', 'location=no');
+
+      resolve(window.URL);
     });
   }
 }
