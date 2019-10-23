@@ -31,6 +31,6 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   sendRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
-    return this.http.get<Object>('https://jsonplaceholder.typicode.com/todos/1',this.httpOptions).pipe();
+    return this.http.post<Object>(this.authorizationEndpoint, this.requestPayload, this.httpOptions).pipe();
   }
 }
