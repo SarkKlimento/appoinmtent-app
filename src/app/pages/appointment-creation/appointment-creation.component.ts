@@ -27,7 +27,16 @@ export class AppointmentCreationComponent {
   readonly emptyFieldError: string;
   readonly successMessage: string;
 
+  private readonly accessToken: string;
+
   constructor(private restService: SalesforceRESTcalloutServiceService) {
+    this.accessToken = restService.getToken();
+
+    if (this.accessToken || this.accessToken.length === 0) {
+      restService.authorize();
+      this.accessToken = restService.getToken();
+    }
+
     this.headerString = 'Please, enter information below!';
     this.firstNameString = 'First Name';
     this.secondNameString = 'Second Name';
@@ -44,8 +53,14 @@ export class AppointmentCreationComponent {
     if (this.checkDataValidation()) {
       console.log('Correct!');
       console.log(!this.firstName);
-      this.restService.sendRequestToSalesforce('Appointments', '').subscribe(response => console.log(response));
-      this.restService.sendAuthRequestToSalesforce('Appointments', '').subscribe(response => console.log(response));
+      this.restService.sendRequestToSalesforce('Appointments', '{' +
+        '"client_first_name": "John",' +
+        '"client_last_name": "Doe",' +
+        '"appointment_date": "2019-03-04",' +
+        '"start_time": "13:00",' +
+        '"end_time": "14:00",' +
+        '"account_name": "Genesys Hospital"' +
+        '}', this.accessToken).subscribe(response => console.log(response));
     } else {
       this.errorText = this.emptyFieldError;
     }
