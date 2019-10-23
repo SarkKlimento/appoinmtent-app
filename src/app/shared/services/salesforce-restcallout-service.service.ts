@@ -44,6 +44,7 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   sendAuthRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
+    this.testMethod();
     return this.http.post<Object>(this.authorizationURL, '').pipe();
   }
 
