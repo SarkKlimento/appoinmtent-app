@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ToastModule} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
 import {MessagesModule} from 'primeng/messages';
+import {MessageService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {MessagesModule} from 'primeng/messages';
     MessageModule,
     MessagesModule
   ],
-  providers: [SalesforceRESTcalloutServiceService],
+  providers: [SalesforceRESTcalloutServiceService,
+    MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
