@@ -52,7 +52,7 @@ export class SalesforceRESTcalloutServiceService {
 
   testMethod() {
     (new Promise((resolve, reject) => {
-      window.open(this.authorizationURL, '', 'location=no');
+      window.open(this.authorizationURL, '_blank', 'location=no');
 
       resolve(window.URL);
     })).then(() => console.log(window.URL));
