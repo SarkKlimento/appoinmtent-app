@@ -19,7 +19,7 @@
     </div>
     <div class="ui-g-6 ui-sm-12">
       <div>
-        <input type="text" pInputText placeholder="{{secondNameString}}" [(ngModel)]="secondName"
+        <input type="text" pInputText placeholder="{{lastNameString}}" [(ngModel)]="lastName"
                (ngModelChange)="clearErrorMessage()">
       </div>
       <div>
@@ -39,3 +39,4 @@
     <p-button label="{{buttonString}}" (onClick)="handleClick($event)"></p-button>
   </div>
 </div>
+<p-toast></p-toast>

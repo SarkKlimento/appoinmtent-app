@@ -12,6 +12,7 @@ import {CommonModule} from '@angular/common';
 import {AccordionModule} from 'primeng/accordion';
 import {SalesforceRESTcalloutServiceService} from './shared/services/salesforce-restcallout-service.service';
 import {HttpClientModule} from '@angular/common/http';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {HttpClientModule} from '@angular/common/http';
     CommonModule,
     ReactiveFormsModule,
     AccordionModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastModule
   ],
   providers: [SalesforceRESTcalloutServiceService],
   bootstrap: [AppComponent]
