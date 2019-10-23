@@ -42,8 +42,8 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   getToken(): string {
-    console.log(JSON.stringify(window.URL));
-    console.log(window.URL.arguments);
+    console.log(window.location.href);
+    console.log(this.route.url);
     return this.route.snapshot.paramMap.get('access_token');
   }
 }
