@@ -10,7 +10,7 @@ export class SalesforceRESTcalloutServiceService {
   readonly baseEndpoint: string;
   readonly redirect_uri: string;
 
-  private scopeParameters: Array<string> = ['full'];
+  private scopeParameters: Array<string> = ['full','refresh_token'];
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
