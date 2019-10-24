@@ -35,8 +35,8 @@ export class AppointmentCreationComponent {
     this.accessToken = restService.getToken();
 
     if (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0) {
-      restService.authorize();
-      this.accessToken = restService.getToken();
+      //restService.authorize();
+      //this.accessToken = restService.getToken();
     }
 
     this.headerString = 'Please, enter information below!';
