@@ -59,6 +59,8 @@ export class SalesforceRESTcalloutServiceService {
         // TODO: send data to the cookie
         observer.next('Done');
         observer.complete();
+      }, error => {
+        console.log(error);
       });
     });
   }
@@ -78,6 +80,8 @@ export class SalesforceRESTcalloutServiceService {
         // TODO: send data to the cookie
         observer.next('Done');
         observer.complete();
+      }, error => {
+        console.log(error);
       });
     });
   }
