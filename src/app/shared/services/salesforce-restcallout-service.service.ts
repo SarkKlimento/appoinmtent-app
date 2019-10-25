@@ -84,12 +84,9 @@ export class SalesforceRESTcalloutServiceService {
 
   getCodeFromURL(): string {
     const urlString = window.location.href;
-    const startIndex = urlString.indexOf('code') + 1;
+    const startIndex = urlString.indexOf('code') + 2;
 
-    console.log(urlString.indexOf('='));
-    console.log(urlString.indexOf('code'));
-
-    return startIndex > -1 ? urlString.substring(startIndex) : null;
+    return startIndex > 1 ? urlString.substring(startIndex) : null;
   }
 
   getTokenFromURL(): string {
@@ -97,7 +94,7 @@ export class SalesforceRESTcalloutServiceService {
     const startIndex = urlString.indexOf('#') + 14;
     const endIndex = urlString.indexOf('&', startIndex);
 
-    return startIndex > -1 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+    return startIndex > 13 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
   }
 
   getRefreshToken(): string {
@@ -105,6 +102,6 @@ export class SalesforceRESTcalloutServiceService {
     const startIndex = urlString.indexOf('#') + 14;
     const endIndex = urlString.indexOf('&', startIndex);
 
-    return startIndex > -1 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+    return startIndex > 13 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
   }
 }
