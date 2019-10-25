@@ -59,7 +59,7 @@ export class SalesforceRESTcalloutServiceService {
       };
 
       console.log(tokenEndpoint);
-      this.http.post<Object>('tokenEndpoint', '', httpOptions).pipe().subscribe(next => {
+      this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
