@@ -59,16 +59,8 @@ export class SalesforceRESTcalloutServiceService {
 
 
       console.log(tokenEndpoint);
-      fetch('https://login.salesforce.com/services/oauth2/token', {
-        method: 'POST', mode: 'no-cors', headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }, body: 'client_id='
-          + this.consumerKey +
-          '&grant_type=authorization_code' +
-          '&redirect_uri=' + this.redirect_uri +
-          '&code=' + code
-      }).then(response => console.log(response));
-      this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
+      fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
+      /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
@@ -76,7 +68,7 @@ export class SalesforceRESTcalloutServiceService {
         observer.complete();
       }, error => {
         console.log(error);
-      });
+      });*/
     });
   }
 
