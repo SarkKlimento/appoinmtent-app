@@ -53,7 +53,6 @@ export class SalesforceRESTcalloutServiceService {
         '&code=' + code;
       const httpOptions = {
         headers: new HttpHeaders({
-          'Accept': 'application/json',
           'Access-Control-Allow-Origin': '*'
         })
       };
