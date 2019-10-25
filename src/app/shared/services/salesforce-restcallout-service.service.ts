@@ -59,7 +59,13 @@ export class SalesforceRESTcalloutServiceService {
 
 
       console.log(tokenEndpoint);
-      fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
+      const resf = new XMLHttpRequest();
+      resf.open('POST', tokenEndpoint, false);
+      resf.onload = e =>{
+        console.log(resf.response);
+      };
+      resf.send('');
+      //fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
       /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
