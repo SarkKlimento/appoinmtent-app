@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-
-declare const $: any;
+import * as $ from 'jquery';
 
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
@@ -73,6 +72,8 @@ export class SalesforceRESTcalloutServiceService {
       }, (data, status) => {
         console.log(data);
         console.log(status);
+      }).then(response => {
+        console.log(response)
       });
       //fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
       /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
