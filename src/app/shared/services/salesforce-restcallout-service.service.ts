@@ -10,7 +10,7 @@ export class SalesforceRESTcalloutServiceService {
   readonly baseEndpoint: string;
   readonly redirect_uri: string;
 
-  private scopeParameters: Array<string> = ['full'];
+  private scopeParameters: Array<string> = ['full', 'refresh_token'];
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
@@ -29,21 +29,76 @@ export class SalesforceRESTcalloutServiceService {
     return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
   }
 
-  authorize() {
+  //Step-one - get code
+  authorize(): void {
     (new Promise((resolve, reject) => {
       let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
         + this.consumerKey +
         '&redirect_uri=' + this.redirect_uri
-        + '&response_type=token&scope=' + this.scopeParameters.join('%20');
+        + '&response_type=code&scope=' + this.scopeParameters.join('%20');
       window.open(loginWindowURL, '_self');
 
       resolve();
     })).then(() => console.log(window.URL));
   }
 
-  getToken(): string {
+  //Step-two - get tokens
+  getTokens(): Observable<Object> {
+    return new Observable(observer => {
+      const code = this.getCodeFromURL();
+      const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
+        + this.consumerKey +
+        '&grant_type=authorization_code' +
+        '&redirect_uri=' + this.redirect_uri +
+        '&code=' + code;
+
+      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
+
+        console.log(next);
+        // TODO: send data to the cookie
+        observer.next('Done');
+        observer.complete();
+      });
+    });
+  }
+
+  //Optional step - refresh token by the use of refresh token
+  refreshTokens(): Observable<Object> {
+    return new Observable(observer => {
+      const refreshToken = this.getRefreshToken();
+      const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
+        + this.consumerKey +
+        '&grant_type=refresh_token' +
+        '&redirect_uri=' + this.redirect_uri +
+        '&refresh_token=' + refreshToken;
+
+      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
+
+        // TODO: send data to the cookie
+        observer.next('Done');
+        observer.complete();
+      });
+    });
+  }
+
+  getCodeFromURL(): string {
     const urlString = window.location.href;
-    const startIndex =urlString.indexOf('#') + 14;
+    const startIndex = urlString.indexOf('code=') + 1;
+
+    return startIndex > -1 ? urlString.substring(startIndex) : null;
+  }
+
+  getTokenFromURL(): string {
+    const urlString = window.location.href;
+    const startIndex = urlString.indexOf('#') + 14;
+    const endIndex = urlString.indexOf('&', startIndex);
+
+    return startIndex > -1 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+  }
+
+  getRefreshToken(): string {
+    const urlString = window.location.href;
+    const startIndex = urlString.indexOf('#') + 14;
     const endIndex = urlString.indexOf('&', startIndex);
 
     return startIndex > -1 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;

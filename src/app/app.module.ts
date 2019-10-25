@@ -16,6 +16,7 @@ import {ToastModule} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
 import {MessagesModule} from 'primeng/messages';
 import {MessageService} from 'primeng/api';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -37,8 +38,11 @@ import {MessageService} from 'primeng/api';
     MessageModule,
     MessagesModule
   ],
-  providers: [SalesforceRESTcalloutServiceService,
-    MessageService],
+  providers: [
+    SalesforceRESTcalloutServiceService,
+    MessageService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,27 +1,57 @@
-# AppointmentsApp
+For the Angular Code We have a separate repository to be able to clear deploy it to Heroku
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
+Step 1:
+With help of UI, create sObject Appointment__c
+And it's fields:
+    Account__c - Lookup(Account)
+    Account_Name__c - Text(255)
+    Appointment_Date__c - Date
+    Client_First_Name__c - Text(255)
+    Client_Last_Name__c - Text(255)
+    End_Time__c - Time
+    Start_Time__c - Time
 
-## Development server
+Step 2:
+    Create Custom label:
+        Name: AppointmentBadRequestMessage
+        Value: Data of the request is empty or in invalid format.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Step 3:
+    Deploy code from branch (Apex)
 
-## Code scaffolding
+To test Angular page you can use my own page (https://sark-appointment-app.herokuapp.com)
+Or host it on your own Heroku account.
+To do so, you need to create a new app on Heroku,
+Then in "Deployment method" select GitHubConnect them and choose the branch needed to deploy (With angular code)
+After successful connection press "Deploy Branch"
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Step 1:
+    From setup find the "CORS"
+    Create new
+    For Origin URL Pattern - enter https://*.herokuapp.com
+    Create new
+    For Origin URL Pattern - enter your Heroku app address (https://sark-appointment-app.herokuapp.com as for me)
+    
+Step 2:
+    From setup find the "Remote Sites Settings"
+    Create new 
+    For Remote Site URL - enter your Heroku app address (https://sark-appointment-app.herokuapp.com as for me)
 
-## Build
+Step 3:
+    From setup find the "App Manager"
+    Create "New Connected App"
+    Select Enable OAuth Settings
+    For callback URL - enter your heroku app page URL
+    Selected OAuth Scopes - > Full Access(full)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Step 4: 
+    In angular code find the service by path:
+    src/app/shared/services/salesforce-restcallout-service
 
-## Running unit tests
+    And change consumerKey field value for your Connected app (Consumer Key)
+    Change baseEndpoint to your developer edition endpoint with addition of "/services/apexrest/"
+    Change redirect_uri to address of your Heroku app page 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Step 5:
+    Once again in your Heroku UI click Deploy Branch
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
