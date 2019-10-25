@@ -29,14 +29,17 @@ export class AppointmentCreationComponent {
   readonly errorMessage: string;
 
   private readonly accessToken: string;
+  private readonly accessCode: string;
 
   constructor(private restService: SalesforceRESTcalloutServiceService,
               private messageService: MessageService) {
+    this.accessCode = restService.getCodeFromURL();
     this.accessToken = restService.getTokenFromURL();
 
-    if (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0) {
+    if ((this.accessCode === null || this.accessCode === undefined || this.accessCode.length === 0) &&
+      (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
       restService.authorize();
-      this.accessToken = restService.getTokenFromURL();
+      this.accessCode = restService.getCodeFromURL();
     }
 
     this.headerString = 'Please, enter information below!';
@@ -53,7 +56,8 @@ export class AppointmentCreationComponent {
   }
 
   handleClick(event: Event): void {
-    this.restService.getTokens().subscribe(next => {});
+    this.restService.getTokens().subscribe(next => {
+    });
 
     if (this.checkDataValidation()) {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
