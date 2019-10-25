@@ -59,9 +59,9 @@ export class SalesforceRESTcalloutServiceService {
 
 
       console.log(tokenEndpoint);
-      fetch(tokenEndpoint, {method: 'POST', body: ''}).then(response => console.log(response.json()));
+      fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
       fetch('https://login.salesforce.com/services/oauth2/token', {
-        method: 'POST', headers: {
+        method: 'POST', mode: 'no-cors', headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }, body: 'client_id='
           + this.consumerKey +
