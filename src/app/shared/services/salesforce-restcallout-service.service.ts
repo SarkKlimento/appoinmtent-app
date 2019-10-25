@@ -56,7 +56,19 @@ export class SalesforceRESTcalloutServiceService {
           'Accept': 'application/json'
         })
       };
+
+
       console.log(tokenEndpoint);
+      fetch(tokenEndpoint, {method: 'POST', body: ''}).then(response => console.log(response.json()));
+      fetch('https://login.salesforce.com/services/oauth2/token', {
+        method: 'POST', headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }, body: 'client_id='
+          + this.consumerKey +
+          '&grant_type=authorization_code' +
+          '&redirect_uri=' + this.redirect_uri +
+          '&code=' + code
+      }).then(response => console.log(response.json()));
       this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
