@@ -60,7 +60,7 @@ export class SalesforceRESTcalloutServiceService {
 
       console.log(tokenEndpoint);
       const resf = new XMLHttpRequest();
-      resf.open('POST', tokenEndpoint, false);
+      resf.open('POST', tokenEndpoint);
       resf.onload = e =>{
         console.log(resf.response);
       };
