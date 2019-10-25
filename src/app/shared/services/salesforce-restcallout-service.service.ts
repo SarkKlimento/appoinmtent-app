@@ -84,7 +84,7 @@ export class SalesforceRESTcalloutServiceService {
 
   getCodeFromURL(): string {
     const urlString = window.location.href;
-    const startIndex = urlString.indexOf('code=') + 1;
+    const startIndex = urlString.indexOf('=') + 1;
 
     return startIndex > -1 ? urlString.substring(startIndex) : null;
   }
