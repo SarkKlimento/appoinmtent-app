@@ -3,6 +3,8 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 
+declare const $: any;
+
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
 
@@ -59,12 +61,19 @@ export class SalesforceRESTcalloutServiceService {
 
 
       console.log(tokenEndpoint);
-      const resf = new XMLHttpRequest();
+      /*const resf = new XMLHttpRequest();
       resf.open('POST', tokenEndpoint);
       resf.onload = e =>{
         console.log(resf.response);
       };
-      resf.send('');
+      resf.send('');*/
+      $.post(tokenEndpoint, {
+        headers: {Accept: "application/json", "Access-Control-Allow-Origin": "*"},
+        crossOrigin: true,
+      }, (data, status) => {
+        console.log(data);
+        console.log(status);
+      });
       //fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
       /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
