@@ -52,6 +52,7 @@ export class SalesforceRESTcalloutServiceService {
         '&redirect_uri=' + this.redirect_uri +
         '&code=' + code;
 
+      console.log(tokenEndpoint);
       this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
 
         console.log(next);
