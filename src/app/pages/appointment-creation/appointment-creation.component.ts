@@ -54,7 +54,7 @@ export class AppointmentCreationComponent {
 
   handleClick(event: Event): void {
     this.restService.getTokens().subscribe(next => {});
-    
+
     if (this.checkDataValidation()) {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
         '"client_first_name": "' + this.firstName + '",' +
