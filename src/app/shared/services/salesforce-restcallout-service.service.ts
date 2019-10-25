@@ -51,9 +51,13 @@ export class SalesforceRESTcalloutServiceService {
         '&grant_type=authorization_code' +
         '&redirect_uri=' + this.redirect_uri +
         '&code=' + code;
-
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Accept': 'application/json'
+        })
+      };
       console.log(tokenEndpoint);
-      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
+      this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
