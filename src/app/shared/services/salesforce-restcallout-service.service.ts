@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import * as $ from 'jquery';
+declare var $: any;
 
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
