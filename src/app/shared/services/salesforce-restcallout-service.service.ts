@@ -46,14 +46,21 @@ export class SalesforceRESTcalloutServiceService {
   getTokens(): Observable<Object> {
     return new Observable(observer => {
       const code = this.getCodeFromURL();
-      const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
+      const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token';
+      const tokenBody = 'client_id='
         + this.consumerKey +
         '&grant_type=authorization_code' +
         '&redirect_uri=' + this.redirect_uri +
         '&code=' + code;
-
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        })
+      };
       console.log(tokenEndpoint);
-      this.http.post<Object>('tokenEndpoint', '').pipe().subscribe(next => {
+      console.log(tokenBody);
+      console.log(httpOptions);
+      this.http.post<Object>(tokenEndpoint, tokenBody, httpOptions).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
