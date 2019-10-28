@@ -132,19 +132,15 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   getToken(): string {
-    const simpleCrypto = new SimpleCrypto(this.consumerKey);
-    const encryptedTokens = this.cookieService.get(this.tokensCookieName);
-    const decryptedTokens = simpleCrypto.decrypt(encryptedTokens, true);
+    const decryptedTokens = this.getTokensFromCookie();
 
-    return decryptedTokens['accessToken'];
+    return decryptedTokens ? decryptedTokens['accessToken'] : null;
   }
 
   getRefreshToken(): string {
-    const simpleCrypto = new SimpleCrypto(this.consumerKey);
-    const encryptedTokens = this.cookieService.get(this.tokensCookieName);
-    const decryptedTokens = simpleCrypto.decrypt(encryptedTokens, true);
+    const decryptedTokens = this.getTokensFromCookie();
 
-    return decryptedTokens['refreshToken'];
+    return decryptedTokens ? decryptedTokens['refreshToken'] : null;
   }
 
   setTokensToCookie(accessToken: string, refreshToken?: string): void {
@@ -163,5 +159,12 @@ export class SalesforceRESTcalloutServiceService {
     this.cookieService.set(this.tokensCookieName, encryptedTokens);
 
     console.log(accessToken);
+  }
+
+  private getTokensFromCookie(): any {
+    const simpleCrypto = new SimpleCrypto(this.consumerKey);
+    const encryptedTokens = this.cookieService.get(this.tokensCookieName);
+    
+    return encryptedTokens ? simpleCrypto.decrypt(encryptedTokens, true) : null;
   }
 }
