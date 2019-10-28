@@ -56,9 +56,7 @@ export class SalesforceRESTcalloutServiceService {
         headers: new HttpHeaders({
           'Accept': 'application/json',
           "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Origin": "*",
-          "sec-fetch-mode": "cors",
-          "sec-fetch-site": "same-origin"
+          "Access-Control-Allow-Origin": "*"
         })
       };
 
@@ -101,7 +99,7 @@ export class SalesforceRESTcalloutServiceService {
           Referer: this.redirect_uri
         }
       }).then(response => console.log(response));*/
-      this.http.post<Object>('https://login.salesforce.com/services/oauth2/token', requestBody, httpOptions).pipe().subscribe(next => {
+      this.http.post<Object>('https://login.salesforce.com/services/oauth2/token/', requestBody).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
