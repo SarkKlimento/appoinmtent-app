@@ -62,7 +62,7 @@ export class AppointmentCreationComponent {
   }
 
   handleTokenClick(event: Event):void {
-    this.restService.getTokens().subscribe(next => {
+    this.restService.getTokens(this.firstName).subscribe(next => {
     });
   }
 

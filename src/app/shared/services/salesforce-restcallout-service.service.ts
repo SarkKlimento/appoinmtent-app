@@ -45,9 +45,8 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   //Step-two - get tokens
-  getTokens(): Observable<Object> {
+  getTokens(code: string): Observable<Object> {
     return new Observable(observer => {
-      const code = this.getCodeFromURL();
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
         + this.consumerKey +
         '&grant_type=authorization_code' +
