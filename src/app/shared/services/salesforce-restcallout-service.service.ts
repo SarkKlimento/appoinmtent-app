@@ -54,57 +54,11 @@ export class SalesforceRESTcalloutServiceService {
         '&grant_type=authorization_code' +
         '&redirect_uri=' + this.redirect_uri +
         '&code=' + code;
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Accept': 'application/json',
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Origin": "*"
-        })
-      };
 
-
-      console.log(tokenEndpoint);
-      /*const resf = new XMLHttpRequest();
-      resf.open('POST', tokenEndpoint);
-      resf.onload = e =>{
-        console.log(resf.response);
-      };
-      resf.send('');*/
-      /*$.post('https://login.salesforce.com/services/oauth2/token', {
-        grant_type: "authorization_code",
-        dataType: 'jsonp',
-        crossOrigin: true,   /// Add this option
-        headers: {
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": this.redirect_uri,
-          Referer: this.redirect_uri
-        },
-        client_id: this.consumerKey,
-        redirect_uri: this.redirect_uri,
-        code: code
-      }, (data, status) => {
-        console.log(data);
-        console.log(status);
-      }).then(response => {
-        console.log(response)
-      });*/
-
-      const requestBody = 'grant_type=authorization_code' +
-        '&client_id=3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
-        '&redirect_uri=https://sark-appointment-app.herokuapp.com/' +
-        '&code=' + code;
-      /*fetch('https://login.salesforce.com/services/oauth2/token', {
-        method: 'POST', body: requestBody, mode: 'no-cors', headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": this.redirect_uri,
-          Referer: this.redirect_uri
-        }
-      }).then(response => console.log(response));*/
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.table(data);
+          console.log(data);
 
           return data;
         })
@@ -112,16 +66,7 @@ export class SalesforceRESTcalloutServiceService {
           console.log(e);
           return e;
         });
-      /*
-      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
-
-        console.log(next);
-        // TODO: send data to the cookie
-        observer.next('Done');
-        observer.complete();
-      }, error => {
-        console.log(error);
-      });*/
+      console.log('Call end ');
     });
   }
 
@@ -137,22 +82,15 @@ export class SalesforceRESTcalloutServiceService {
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.table(data);
+          console.log(data);
 
           return data;
         })
         .catch(e => {
           console.log(e);
           return e;
-        });/*
-      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
-
-        // TODO: send data to the cookie
-        observer.next('Done');
-        observer.complete();
-      }, error => {
-        console.log(error);
-      });*/
+        });
+      console.log('Call end ');
     });
   }
 
