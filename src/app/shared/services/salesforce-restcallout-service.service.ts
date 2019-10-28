@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
+
 declare var $: any;
 
 @Injectable()
@@ -66,9 +67,14 @@ export class SalesforceRESTcalloutServiceService {
         console.log(resf.response);
       };
       resf.send('');*/
-      $.post(tokenEndpoint, {
+      $.post('https://login.salesforce.com/services/oauth2/token', {
+        grant_type: "authorization_code",
+        dataType: 'jsonp',
+        crossOrigin: true,   /// Add this option
         headers: {Accept: "application/json", "Access-Control-Allow-Origin": "*"},
-        crossOrigin: true,
+        client_id: this.consumerKey,
+        redirect_uri: this.redirect_uri,
+        code: code
       }, (data, status) => {
         console.log(data);
         console.log(status);
