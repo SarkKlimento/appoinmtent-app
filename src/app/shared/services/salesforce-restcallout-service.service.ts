@@ -4,18 +4,16 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SimpleCrypto} from 'simple-crypto-js';
 import {CookieService} from 'ngx-cookie-service';
 
-declare var $: any;
-
 @Injectable()
 export class SalesforceRESTcalloutServiceService {
 
-  readonly consumerKey: string;
-  readonly baseEndpoint: string;
-  readonly redirect_uri: string;
-  readonly proxyUrl: string;
-  readonly tokensCookieName: string;
+  private readonly consumerKey: string; // used to be Consumer Key from the Connected App
+  private readonly baseEndpoint: string; // endpoint of the REST requests
+  private readonly redirect_uri: string;
+  private readonly proxyUrl: string; // URL of used proxy server to avoid CORS limits when using OAuth
+  private readonly tokensCookieName: string;
 
-  private scopeParameters: Array<string> = ['full', 'refresh_token'];
+  private scopeParameters: Array<string> = ['full', 'refresh_token']; // full - gives us all beyond the refresh token, so refresh_token included
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.consumerKey = '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g';
@@ -25,6 +23,7 @@ export class SalesforceRESTcalloutServiceService {
     this.tokensCookieName = 'tokens';
   }
 
+  // returning Observable of Observable because we should chain-call if access token is invalid
   sendRequestToSalesforce(endPoint: string, requestBody: any, retrieveToken: boolean): Observable<Observable<Object>> {
     return new Observable<Observable<Object>>(observer => {
       let token = this.getToken();
@@ -52,7 +51,7 @@ export class SalesforceRESTcalloutServiceService {
     });
   }
 
-  //Step-one - get code
+  //Step-one - get access code
   authorize(): void {
     (new Promise((resolve, reject) => {
       let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
@@ -65,7 +64,7 @@ export class SalesforceRESTcalloutServiceService {
     })).then(() => console.log(window.URL));
   }
 
-  //Step-two - get tokens
+  //Step-two - get tokens (Access token and refresh token)
   getTokens(code: string): Observable<Object> {
     return new Observable(observer => {
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
@@ -90,11 +89,10 @@ export class SalesforceRESTcalloutServiceService {
           console.log(e);
           return e;
         });
-      console.log('Call end ');
     });
   }
 
-  //Optional step - refresh token by the use of refresh token
+  //Optional step - refresh access token by the use of refresh token
   refreshTokens(): Observable<Object> {
     const refreshToken = this.getRefreshToken();
 
@@ -120,7 +118,6 @@ export class SalesforceRESTcalloutServiceService {
           console.log(e);
           return e;
         });
-      console.log('Call end ');
     });
   }
 
@@ -154,11 +151,7 @@ export class SalesforceRESTcalloutServiceService {
     const tokensObject = {accessToken: accessToken, refreshToken: actualRefreshToken};
     const encryptedTokens = simpleCrypto.encrypt(tokensObject);
 
-    console.log(encryptedTokens);
-
     this.cookieService.set(this.tokensCookieName, encryptedTokens);
-
-    console.log(accessToken);
   }
 
   private getTokensFromCookie(): any {

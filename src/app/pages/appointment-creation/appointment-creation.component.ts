@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {SalesforceRESTcalloutServiceService} from '../../shared/services/salesforce-restcallout-service.service';
 import {MessageService} from 'primeng/api';
-import {observable} from "rxjs";
 
 @Component({
   selector: 'app-appointment-creation',
@@ -36,15 +35,14 @@ export class AppointmentCreationComponent {
               private messageService: MessageService) {
     this.accessCode = restService.getCodeFromURL();
     this.accessToken = restService.getToken();
-    console.log(this.accessCode);
-    console.log(this.accessToken);
+    console.log('this.accessCode: ' + this.accessCode);
+    console.log('this.accessToken: ' + this.accessToken);
 
     if ((this.accessCode === null || this.accessCode === undefined || this.accessCode.length === 0) &&
       (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
       restService.authorize();
     } else if (this.accessCode) {
       restService.getTokens(this.accessCode).subscribe(next => console.log('Success of reg tokens operation!'));
-      console.log('yeyey');
     }
 
     this.headerString = 'Please, enter information below!';
@@ -58,20 +56,6 @@ export class AppointmentCreationComponent {
     this.emptyFieldError = 'One of the fields is empty! To save data - please, fill all inputs!';
     this.successMessage = 'Record was created!';
     this.errorMessage = 'Some error was acquired!';
-  }
-
-  handleAuthClick(event: Event): void {
-    this.restService.authorize();
-  }
-
-  handleTokenClick(event: Event): void {
-    this.restService.getTokens(this.firstName).subscribe(next => {
-    });
-  }
-
-  handleTokenRefreshClick(event: Event): void {
-    this.restService.refreshTokens().subscribe(next => {
-    });
   }
 
   handleClick(event: Event, repeated: boolean = false): void {
