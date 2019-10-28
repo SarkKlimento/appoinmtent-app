@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {SalesforceRESTcalloutServiceService} from '../../shared/services/salesforce-restcallout-service.service';
 import {MessageService} from 'primeng/api';
+import {observable} from "rxjs";
 
 @Component({
   selector: 'app-appointment-creation',
@@ -34,14 +35,15 @@ export class AppointmentCreationComponent {
   constructor(private restService: SalesforceRESTcalloutServiceService,
               private messageService: MessageService) {
     this.accessCode = restService.getCodeFromURL();
-    this.accessToken = restService.getTokenFromURL();
+    this.accessToken = restService.getToken();
     console.log(this.accessCode);
     console.log(this.accessToken);
 
     if ((this.accessCode === null || this.accessCode === undefined || this.accessCode.length === 0) &&
       (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
-      //restService.authorize();
-      this.accessCode = restService.getCodeFromURL();
+      restService.authorize();
+    } else if (this.accessCode) {
+      restService.getTokens(this.accessCode);
     }
 
     this.headerString = 'Please, enter information below!';
@@ -57,21 +59,21 @@ export class AppointmentCreationComponent {
     this.errorMessage = 'Some error was acquired!';
   }
 
-  handleAuthClick(event: Event):void {
+  handleAuthClick(event: Event): void {
     this.restService.authorize();
   }
 
-  handleTokenClick(event: Event):void {
+  handleTokenClick(event: Event): void {
     this.restService.getTokens(this.firstName).subscribe(next => {
     });
   }
 
-  handleTokenRefreshClick(event: Event):void {
-    this.restService.refreshTokens(this.lastName).subscribe(next => {
+  handleTokenRefreshClick(event: Event): void {
+    this.restService.refreshTokens().subscribe(next => {
     });
   }
 
-  handleClick(event: Event): void {
+  handleClick(event: Event, repeated: boolean = false): void {
     if (this.checkDataValidation()) {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
         '"client_first_name": "' + this.firstName + '",' +
@@ -81,19 +83,31 @@ export class AppointmentCreationComponent {
         '"start_time": "' + this.startTime.getHours() + ':' + this.startTime.getMinutes() + '",' +
         '"end_time": "' + this.endTime.getHours() + ':' + this.endTime.getMinutes() + '",' +
         '"account_name": "' + this.accountName + '"' +
-        '}', this.accessToken
-      ).subscribe(response => {
-        if (response['Status'] === 'Success') {
-          this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
-          this.firstName = '';
-          this.lastName = '';
-          this.appointmentDate = null;
-          this.startTime = null;
-          this.endTime = null;
-          this.accountName = '';
-        } else {
-          this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
+        '}', repeated
+      ).subscribe(observableRequest => {
+        observableRequest.subscribe(response => {
+          if (response['Status'] === 'Success') {
+            this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
+            this.firstName = '';
+            this.lastName = '';
+            this.appointmentDate = null;
+            this.startTime = null;
+            this.endTime = null;
+            this.accountName = '';
+          } else {
+            this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
+          }
+        }, error => {
+          if (!repeated) {
+            this.handleClick(event, true)
+          }
+          console.log(error);
+        });
+      }, error => {
+        if (!repeated) {
+          this.handleClick(event, true)
         }
+        console.log(error);
       });
     } else {
       this.errorText = this.emptyFieldError;

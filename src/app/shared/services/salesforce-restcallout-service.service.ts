@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import {SimpleCrypto} from 'simple-crypto-js';
+import {CookieService} from 'ngx-cookie-service';
 
 declare var $: any;
 
@@ -12,25 +13,43 @@ export class SalesforceRESTcalloutServiceService {
   readonly baseEndpoint: string;
   readonly redirect_uri: string;
   readonly proxyUrl: string;
+  readonly tokensCookieName: string;
 
   private scopeParameters: Array<string> = ['full', 'refresh_token'];
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
-    this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
+  constructor(private http: HttpClient, private cookieService: CookieService) {
+    this.consumerKey = '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g';
     this.baseEndpoint = 'https://sark-klimento-dev-ed.my.salesforce.com/services/apexrest/';
     this.redirect_uri = 'https://sark-appointment-app.herokuapp.com';
     this.proxyUrl = 'https://sark-proxy.herokuapp.com/';
+    this.tokensCookieName = 'tokens';
   }
 
-  sendRequestToSalesforce(endPoint: string, requestBody: any, token: string): Observable<Object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json'
-      })
-    };
+  sendRequestToSalesforce(endPoint: string, requestBody: any, retrieveToken: boolean): Observable<Observable<Object>> {
+    return new Observable<Observable<Object>>(observer => {
+      let token = this.getToken();
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/json'
+        })
+      };
 
-    return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
+      if (retrieveToken) {
+        this.refreshTokens().subscribe(next => {
+          token = this.getToken();
+          httpOptions = {
+            headers: new HttpHeaders({
+              'Authorization': 'Bearer ' + token,
+              'Accept': 'application/json'
+            })
+          };
+          observer.next(this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe());
+        });
+      } else {
+        observer.next(this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe());
+      }
+    });
   }
 
   //Step-one - get code
@@ -64,6 +83,8 @@ export class SalesforceRESTcalloutServiceService {
           if (accessToken && refreshToken) {
             this.setTokensToCookie(accessToken, refreshToken);
           }
+
+          observer.next(true);
         })
         .catch(e => {
           console.log(e);
@@ -74,7 +95,9 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   //Optional step - refresh token by the use of refresh token
-  refreshTokens(refreshToken: string): Observable<Object> {
+  refreshTokens(): Observable<Object> {
+    const refreshToken = this.getRefreshToken();
+
     return new Observable(observer => {
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
         + this.consumerKey +
@@ -90,6 +113,8 @@ export class SalesforceRESTcalloutServiceService {
           if (accessToken) {
             this.setTokensToCookie(accessToken);
           }
+
+          observer.next(true);
         })
         .catch(e => {
           console.log(e);
@@ -106,26 +131,36 @@ export class SalesforceRESTcalloutServiceService {
     return startIndex > 4 ? urlString.substring(startIndex) : null;
   }
 
-  getTokenFromURL(): string {
-    const urlString = window.location.href;
-    const startIndex = urlString.indexOf('#') + 14;
-    const endIndex = urlString.indexOf('&', startIndex);
+  getToken(): string {
+    const simpleCrypto = new SimpleCrypto(this.consumerKey);
+    const encryptedTokens = this.cookieService.get(this.tokensCookieName);
+    const decryptedTokens = simpleCrypto.decrypt(encryptedTokens, true);
 
-    return startIndex > 13 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+    return decryptedTokens['accessToken'];
   }
 
   getRefreshToken(): string {
-    const urlString = window.location.href;
-    const startIndex = urlString.indexOf('#') + 14;
-    const endIndex = urlString.indexOf('&', startIndex);
+    const simpleCrypto = new SimpleCrypto(this.consumerKey);
+    const encryptedTokens = this.cookieService.get(this.tokensCookieName);
+    const decryptedTokens = simpleCrypto.decrypt(encryptedTokens, true);
 
-    return startIndex > 13 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+    return decryptedTokens['refreshToken'];
   }
 
   setTokensToCookie(accessToken: string, refreshToken?: string): void {
-    if (refreshToken) {
-      console.log(refreshToken);
+    let actualRefreshToken = refreshToken;
+
+    if (!actualRefreshToken) {
+      actualRefreshToken = this.getRefreshToken();
     }
+
+    const simpleCrypto = new SimpleCrypto(this.consumerKey);
+    const tokensObject = {accessToken: accessToken, refreshToken: actualRefreshToken};
+    const encryptedTokens = simpleCrypto.encrypt(tokensObject);
+
+    console.log(encryptedTokens);
+
+    this.cookieService.set(this.tokensCookieName, encryptedTokens);
 
     console.log(accessToken);
   }
