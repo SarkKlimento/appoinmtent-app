@@ -99,6 +99,19 @@ export class SalesforceRESTcalloutServiceService {
           Referer: this.redirect_uri
         }
       }).then(response => console.log(response));*/
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      fetch(proxyUrl + tokenEndpoint)
+        .then(blob => blob.json())
+        .then(data => {
+          console.table(data);
+
+          return data;
+        })
+        .catch(e => {
+          console.log(e);
+          return e;
+        });
+      /*
       this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
 
         console.log(next);
@@ -107,7 +120,7 @@ export class SalesforceRESTcalloutServiceService {
         observer.complete();
       }, error => {
         console.log(error);
-      });
+      });*/
     });
   }
 
@@ -120,6 +133,18 @@ export class SalesforceRESTcalloutServiceService {
         '&redirect_uri=' + this.redirect_uri +
         '&refresh_token=' + refreshToken;
 
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      fetch(proxyUrl + tokenEndpoint)
+        .then(blob => blob.json())
+        .then(data => {
+          console.table(data);
+
+          return data;
+        })
+        .catch(e => {
+          console.log(e);
+          return e;
+        });/*
       this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
 
         // TODO: send data to the cookie
@@ -127,7 +152,7 @@ export class SalesforceRESTcalloutServiceService {
         observer.complete();
       }, error => {
         console.log(error);
-      });
+      });*/
     });
   }
 
