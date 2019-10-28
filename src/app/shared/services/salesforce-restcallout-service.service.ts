@@ -11,6 +11,7 @@ export class SalesforceRESTcalloutServiceService {
   readonly consumerKey: string;
   readonly baseEndpoint: string;
   readonly redirect_uri: string;
+  readonly proxyUrl: string;
 
   private scopeParameters: Array<string> = ['full', 'refresh_token'];
 
@@ -18,6 +19,7 @@ export class SalesforceRESTcalloutServiceService {
     this.consumerKey = "3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g";
     this.baseEndpoint = 'https://sark-klimento-dev-ed.my.salesforce.com/services/apexrest/';
     this.redirect_uri = 'https://sark-appointment-app.herokuapp.com';
+    this.proxyUrl = 'https://sark-proxy.herokuapp.com/';
   }
 
   sendRequestToSalesforce(endPoint: string, requestBody: any, token: string): Observable<Object> {
@@ -99,8 +101,7 @@ export class SalesforceRESTcalloutServiceService {
           Referer: this.redirect_uri
         }
       }).then(response => console.log(response));*/
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      fetch(proxyUrl + tokenEndpoint)
+      fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
           console.table(data);
@@ -133,8 +134,7 @@ export class SalesforceRESTcalloutServiceService {
         '&redirect_uri=' + this.redirect_uri +
         '&refresh_token=' + refreshToken;
 
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      fetch(proxyUrl + tokenEndpoint)
+      fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
           console.table(data);
