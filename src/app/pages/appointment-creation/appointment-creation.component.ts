@@ -67,7 +67,7 @@ export class AppointmentCreationComponent {
   }
 
   handleTokenRefreshClick(event: Event):void {
-    this.restService.getTokens(this.lastName).subscribe(next => {
+    this.restService.refreshTokens(this.lastName).subscribe(next => {
     });
   }
 
