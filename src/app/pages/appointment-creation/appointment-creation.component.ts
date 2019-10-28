@@ -40,7 +40,7 @@ export class AppointmentCreationComponent {
 
     if ((this.accessCode === null || this.accessCode === undefined || this.accessCode.length === 0) &&
       (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
-      restService.authorize();
+      //restService.authorize();
       this.accessCode = restService.getCodeFromURL();
     }
 
@@ -57,10 +57,16 @@ export class AppointmentCreationComponent {
     this.errorMessage = 'Some error was acquired!';
   }
 
-  handleClick(event: Event): void {
+  handleAuthClick(event: Event):void {
+    this.restService.authorize();
+  }
+
+  handleTokenClick(event: Event):void {
     this.restService.getTokens().subscribe(next => {
     });
+  }
 
+  handleClick(event: Event): void {
     if (this.checkDataValidation()) {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
         '"client_first_name": "' + this.firstName + '",' +
