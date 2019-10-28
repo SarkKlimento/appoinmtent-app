@@ -58,10 +58,12 @@ export class SalesforceRESTcalloutServiceService {
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.log(data['access_token']);
-          console.log(data['refresh_token']);
+          const accessToken = data['access_token'];
+          const refreshToken = data['refresh_token'];
 
-          return data;
+          if (accessToken && refreshToken) {
+            this.setTokensToCookie(accessToken, refreshToken);
+          }
         })
         .catch(e => {
           console.log(e);
@@ -83,9 +85,11 @@ export class SalesforceRESTcalloutServiceService {
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.log(data['access_token']);
+          const accessToken = data['access_token'];
 
-          return data;
+          if (accessToken) {
+            this.setTokensToCookie(accessToken);
+          }
         })
         .catch(e => {
           console.log(e);
@@ -116,5 +120,13 @@ export class SalesforceRESTcalloutServiceService {
     const endIndex = urlString.indexOf('&', startIndex);
 
     return startIndex > 13 && endIndex > -1 ? urlString.substring(startIndex, endIndex) : null;
+  }
+
+  setTokensToCookie(accessToken: string, refreshToken?: string): void {
+    if (refreshToken) {
+      console.log(refreshToken);
+    }
+
+    console.log(accessToken);
   }
 }
