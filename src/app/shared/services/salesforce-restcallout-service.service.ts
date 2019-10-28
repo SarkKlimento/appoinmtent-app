@@ -56,8 +56,7 @@ export class SalesforceRESTcalloutServiceService {
         headers: new HttpHeaders({
           'Accept': 'application/json',
           "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Origin": this.redirect_uri,
-          "Referer": this.redirect_uri
+          "Access-Control-Allow-Origin": "*"
         })
       };
 
