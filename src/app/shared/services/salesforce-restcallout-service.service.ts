@@ -54,7 +54,10 @@ export class SalesforceRESTcalloutServiceService {
         '&code=' + code;
       const httpOptions = {
         headers: new HttpHeaders({
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Access-Control-Allow-Origin": this.redirect_uri,
+          "Referer": this.redirect_uri
         })
       };
 
@@ -89,15 +92,15 @@ export class SalesforceRESTcalloutServiceService {
         '&client_id=3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
         '&redirect_uri=https://sark-appointment-app.herokuapp.com/' +
         '&code=' + code;
-      fetch('https://login.salesforce.com/services/oauth2/token', {
+      /*fetch('https://login.salesforce.com/services/oauth2/token', {
         method: 'POST', body: requestBody, mode: 'no-cors', headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json",
           "Access-Control-Allow-Origin": this.redirect_uri,
           Referer: this.redirect_uri
         }
-      }).then(response => console.log(response));
-      /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
+      }).then(response => console.log(response));*/
+      this.http.post<Object>('https://login.salesforce.com/services/oauth2/token', requestBody, httpOptions).pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
@@ -105,7 +108,7 @@ export class SalesforceRESTcalloutServiceService {
         observer.complete();
       }, error => {
         console.log(error);
-      });*/
+      });
     });
   }
 
