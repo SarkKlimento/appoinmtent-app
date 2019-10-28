@@ -112,9 +112,8 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   //Optional step - refresh token by the use of refresh token
-  refreshTokens(): Observable<Object> {
+  refreshTokens(refreshToken: string): Observable<Object> {
     return new Observable(observer => {
-      const refreshToken = this.getRefreshToken();
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
         + this.consumerKey +
         '&grant_type=refresh_token' +

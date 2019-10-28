@@ -66,6 +66,11 @@ export class AppointmentCreationComponent {
     });
   }
 
+  handleTokenRefreshClick(event: Event):void {
+    this.restService.getTokens(this.lastName).subscribe(next => {
+    });
+  }
+
   handleClick(event: Event): void {
     if (this.checkDataValidation()) {
       this.restService.sendRequestToSalesforce('Appointments', '{' +
