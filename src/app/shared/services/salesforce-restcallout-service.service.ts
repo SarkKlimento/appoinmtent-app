@@ -99,7 +99,7 @@ export class SalesforceRESTcalloutServiceService {
           Referer: this.redirect_uri
         }
       }).then(response => console.log(response));*/
-      this.http.post<Object>('https://login.salesforce.com/services/oauth2/token', requestBody).pipe().subscribe(next => {
+      this.http.post<Object>(tokenEndpoint, '').pipe().subscribe(next => {
 
         console.log(next);
         // TODO: send data to the cookie
@@ -108,7 +108,6 @@ export class SalesforceRESTcalloutServiceService {
       }, error => {
         console.log(error);
       });
-      window.open(tokenEndpoint);
     });
   }
 
