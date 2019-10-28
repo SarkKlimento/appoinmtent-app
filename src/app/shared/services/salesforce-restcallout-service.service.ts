@@ -164,7 +164,7 @@ export class SalesforceRESTcalloutServiceService {
   private getTokensFromCookie(): any {
     const simpleCrypto = new SimpleCrypto(this.consumerKey);
     const encryptedTokens = this.cookieService.get(this.tokensCookieName);
-    
+
     return encryptedTokens ? simpleCrypto.decrypt(encryptedTokens, true) : null;
   }
 }

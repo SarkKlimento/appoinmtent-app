@@ -43,7 +43,8 @@ export class AppointmentCreationComponent {
       (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
       restService.authorize();
     } else if (this.accessCode) {
-      restService.getTokens(this.accessCode);
+      restService.getTokens(this.accessCode).subscribe(next => console.log('Success of reg tokens operation!'));
+      console.log('yeyey');
     }
 
     this.headerString = 'Please, enter information below!';
