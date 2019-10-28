@@ -96,7 +96,7 @@ export class SalesforceRESTcalloutServiceService {
           "Access-Control-Allow-Origin": this.redirect_uri,
           Referer: this.redirect_uri
         }
-      }).then(response => console.log(response.json()));
+      }).then(response => console.log(response));
       /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
