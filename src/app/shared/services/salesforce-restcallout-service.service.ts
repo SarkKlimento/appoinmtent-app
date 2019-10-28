@@ -66,7 +66,7 @@ export class SalesforceRESTcalloutServiceService {
         console.log(resf.response);
       };
       resf.send('');*/
-      $.post('https://login.salesforce.com/services/oauth2/token', {
+      /*$.post('https://login.salesforce.com/services/oauth2/token', {
         grant_type: "authorization_code",
         dataType: 'jsonp',
         crossOrigin: true,   /// Add this option
@@ -83,8 +83,20 @@ export class SalesforceRESTcalloutServiceService {
         console.log(status);
       }).then(response => {
         console.log(response)
-      });
-      //fetch(tokenEndpoint, {method: 'POST', body: '', mode: 'no-cors'}).then(response => console.log(response.json()));
+      });*/
+
+      const requestBody = 'grant_type=authorization_code' +
+        '&client_id=3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g' +
+        '&redirect_uri=https://sark-appointment-app.herokuapp.com/' +
+        '&code=' + code;
+      fetch('https://login.salesforce.com/services/oauth2/token', {
+        method: 'POST', body: requestBody, mode: 'no-cors', headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": this.redirect_uri,
+          Referer: this.redirect_uri
+        }
+      }).then(response => console.log(response.json()));
       /*this.http.post<Object>(tokenEndpoint, '', httpOptions).pipe().subscribe(next => {
 
         console.log(next);
