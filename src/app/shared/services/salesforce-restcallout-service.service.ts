@@ -37,7 +37,7 @@ export class SalesforceRESTcalloutServiceService {
       let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
         + this.consumerKey +
         '&redirect_uri=' + this.redirect_uri
-        + '&response_type=token&scope=' + this.scopeParameters.join('%20');
+        + '&response_type=code&scope=' + this.scopeParameters.join('%20');
       window.open(loginWindowURL, '_self');
 
       resolve();
