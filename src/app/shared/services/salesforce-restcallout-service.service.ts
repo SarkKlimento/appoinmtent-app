@@ -47,7 +47,7 @@ export class SalesforceRESTcalloutServiceService {
   //Step-two - get tokens
   getTokens(code: string): Observable<Object> {
     return new Observable(observer => {
-      const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
+      const tokenEndpoint = 'https://sark-klimento-dev-ed.my.salesforce.com/services/oauth2/token?client_id='
         + this.consumerKey +
         '&grant_type=authorization_code' +
         '&redirect_uri=' + this.redirect_uri +
