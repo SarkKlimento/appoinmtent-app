@@ -64,7 +64,7 @@ export class AppointmentCreationComponent {
         '"client_first_name": "' + this.firstName + '",' +
         '"client_last_name": "' + this.lastName + '",' +
         '"appointment_date": "' + this.appointmentDate.getFullYear() + '-' + this.appointmentDate.getMonth() + '-' +
-        this.appointmentDate.getDay() + '-' + '",' +
+        this.appointmentDate.getDay() + '",' +
         '"start_time": "' + this.startTime.getHours() + ':' + this.startTime.getMinutes() + '",' +
         '"end_time": "' + this.endTime.getHours() + ':' + this.endTime.getMinutes() + '",' +
         '"account_name": "' + this.accountName + '"' +
