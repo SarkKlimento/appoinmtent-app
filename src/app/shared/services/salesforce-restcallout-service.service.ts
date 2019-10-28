@@ -67,12 +67,11 @@ export class SalesforceRESTcalloutServiceService {
         console.log(resf.response);
       };
       resf.send('');*/
-      window.location.href = this.redirect_uri;
       $.post('https://login.salesforce.com/services/oauth2/token', {
         grant_type: "authorization_code",
         dataType: 'jsonp',
         crossOrigin: true,   /// Add this option
-        headers: {Accept: "application/json", "Access-Control-Allow-Origin": "*"},
+        headers: {Accept: "application/json", "Access-Control-Allow-Origin": this.redirect_uri},
         client_id: this.consumerKey,
         redirect_uri: this.redirect_uri,
         code: code
