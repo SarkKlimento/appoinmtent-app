@@ -71,7 +71,11 @@ export class SalesforceRESTcalloutServiceService {
         grant_type: "authorization_code",
         dataType: 'jsonp',
         crossOrigin: true,   /// Add this option
-        headers: {Accept: "application/json", "Access-Control-Allow-Origin": this.redirect_uri},
+        headers: {
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": this.redirect_uri,
+          Referer: this.redirect_uri
+        },
         client_id: this.consumerKey,
         redirect_uri: this.redirect_uri,
         code: code
