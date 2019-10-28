@@ -58,8 +58,8 @@ export class SalesforceRESTcalloutServiceService {
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.log(data.get('access_token'));
-          console.log(data.get('refresh_token'));
+          console.log(data['access_token']);
+          console.log(data['refresh_token']);
 
           return data;
         })
@@ -83,7 +83,7 @@ export class SalesforceRESTcalloutServiceService {
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
         .then(data => {
-          console.log(data.get('access_token'));
+          console.log(data['access_token']);
 
           return data;
         })
