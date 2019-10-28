@@ -112,6 +112,7 @@ export class SalesforceRESTcalloutServiceService {
             this.setTokensToCookie(accessToken);
           }
 
+          console.log('refeshed');
           observer.next(true);
         })
         .catch(e => {
