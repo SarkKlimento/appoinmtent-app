@@ -23,16 +23,19 @@ export class SalesforceRESTcalloutServiceService {
     this.tokensCookieName = 'tokens';
   }
 
-  // returning Observable of Observable because we should chain-call if access token is invalid
-  sendRequestToSalesforce(endPoint: string, requestBody: any): Observable<Object> {
-    let token = this.getToken();
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json'
-      })
-    };
-    return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
+  //sending of the REST request. If it cause any token errors - it will manage it, other way - just return the initial error/value
+  sendRestRequest(endPoint: string, requestBody: any): Observable<Object> {
+    return new Observable(observer => {
+      this.sendRequest(endPoint, requestBody).subscribe(response => {
+        observer.next(response);
+      }, error => {
+        this.handleTokenError(error, endPoint, requestBody).subscribe(response => {
+          observer.next(response);
+        }, error => {
+          observer.error(error);
+        });
+      });
+    });
   }
 
   //Step-one - get access code
@@ -105,22 +108,6 @@ export class SalesforceRESTcalloutServiceService {
     });
   }
 
-  //will return null if error not because of the token
-  handleTokenError(error: any, endPoint: string, requestBody: any): Observable<Object> {
-    return new Observable(observer => {
-      if (error.status === 400 || error.status === 401 || error.status === 0) {
-        this.refreshTokens().subscribe(next => {
-          this.sendRequestToSalesforce(endPoint, requestBody).subscribe(next => observer.next(next), error => {
-            console.log(error);
-            observer.error(error)
-          });
-        }, error => observer.error(error));
-      } else {
-        observer.error(null);
-      }
-    });
-  }
-
   getCodeFromURL(): string {
     const urlString = window.location.href;
     const startIndex = urlString.indexOf('code') + 5;
@@ -132,6 +119,31 @@ export class SalesforceRESTcalloutServiceService {
     const decryptedTokens = this.getTokensFromCookie();
 
     return decryptedTokens ? decryptedTokens['accessToken'] : null;
+  }
+
+  //will re-return error if it not because of the token
+  private handleTokenError(error: any, endPoint: string, requestBody: any): Observable<Object> {
+    return new Observable(observer => {
+      if (error.status === 400 || error.status === 401 || error.status === 0) {
+        this.refreshTokens().subscribe(next => {
+          this.sendRequest(endPoint, requestBody).subscribe(next => observer.next(next), error => observer.error(error));
+        }, error => observer.error(error));
+      } else {
+        observer.error(error);
+      }
+    });
+  }
+
+  private sendRequest(endPoint: string, requestBody: any): Observable<Object> {
+    let token = this.getToken();
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      })
+    };
+    
+    return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
   }
 
   private getRefreshToken(): string {

@@ -68,15 +68,11 @@ export class AppointmentCreationComponent {
         '"account_name": "' + this.accountName + '"' +
         '}';
 
-      this.restService.sendRequestToSalesforce('Appointments', requestBody).subscribe(response => {
+      this.restService.sendRestRequest('Appointments', requestBody).subscribe(response => {
         this.handleResponse(response);
       }, error => {
-        this.restService.handleTokenError(error, 'Appointments', requestBody).subscribe(response => {
-          this.handleResponse(response);
-        }, error => {
-          console.error(error);
-          this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
-        });
+        console.error(error);
+        this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
       });
     } else {
       this.errorText = this.emptyFieldError;
