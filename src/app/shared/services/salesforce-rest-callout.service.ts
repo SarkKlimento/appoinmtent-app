@@ -5,7 +5,7 @@ import {SimpleCrypto} from 'simple-crypto-js';
 import {CookieService} from 'ngx-cookie-service';
 
 @Injectable()
-export class SalesforceRESTcalloutServiceService {
+export class SalesforceRestCalloutService {
 
   private readonly consumerKey: string; // used to be Consumer Key from the Connected App
   private readonly baseEndpoint: string; // endpoint of the REST requests
@@ -121,20 +121,13 @@ export class SalesforceRESTcalloutServiceService {
     return decryptedTokens ? decryptedTokens['accessToken'] : null;
   }
 
-  public brokeTheToken():void {
-    this.setTokensToCookie('bread');
-  }
-
   //Called when error in request occurred
   //Proceed an error and if it a token error - will get the new token and recall the initial request
   //Will re-return error if it not because of the token
   private handleTokenError(error: any, endPoint: string, requestBody: any): Observable<Object> {
-    console.log('token error handling');
     return new Observable(observer => {
       if (error.status === 400 || error.status === 401 || error.status === 0) {
-        console.log('time to refresh');
         this.refreshTokens().subscribe(next => {
-          console.log('token refreshed');
           this.sendRequest(endPoint, requestBody).subscribe(next => observer.next(next), error => observer.error(error));
         }, error => observer.error(error));
       } else {
@@ -162,14 +155,12 @@ export class SalesforceRESTcalloutServiceService {
   }
 
   private setTokensToCookie(accessToken: string, refreshToken?: string): void {
-    let actualRefreshToken = refreshToken;
-
-    if (!actualRefreshToken) {
-      actualRefreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      refreshToken = this.getRefreshToken();
     }
 
     const simpleCrypto = new SimpleCrypto(this.consumerKey);
-    const tokensObject = {accessToken: accessToken, refreshToken: actualRefreshToken};
+    const tokensObject = {accessToken: accessToken, refreshToken: refreshToken};
     const encryptedTokens = simpleCrypto.encrypt(tokensObject);
 
     this.cookieService.set(this.tokensCookieName, encryptedTokens);

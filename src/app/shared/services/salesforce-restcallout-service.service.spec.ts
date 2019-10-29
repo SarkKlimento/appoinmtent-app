@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SalesforceRESTcalloutServiceService } from './salesforce-restcallout-service.service';
+import { SalesforceRestCalloutService } from './salesforce-rest-callout.service';
 
 describe('SalesforceRESTcalloutServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SalesforceRESTcalloutServiceService = TestBed.get(SalesforceRESTcalloutServiceService);
+    const service: SalesforceRestCalloutService = TestBed.get(SalesforceRestCalloutService);
     expect(service).toBeTruthy();
   });
 });

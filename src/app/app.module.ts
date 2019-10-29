@@ -10,7 +10,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CommonModule} from '@angular/common';
 import {AccordionModule} from 'primeng/accordion';
-import {SalesforceRESTcalloutServiceService} from './shared/services/salesforce-restcallout-service.service';
+import {SalesforceRestCalloutService} from './shared/services/salesforce-rest-callout.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ToastModule} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
@@ -39,7 +39,7 @@ import {CookieService} from 'ngx-cookie-service';
     MessagesModule
   ],
   providers: [
-    SalesforceRESTcalloutServiceService,
+    SalesforceRestCalloutService,
     MessageService,
     CookieService
   ],

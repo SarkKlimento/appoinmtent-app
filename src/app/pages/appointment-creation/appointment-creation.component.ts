@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {SalesforceRESTcalloutServiceService} from '../../shared/services/salesforce-restcallout-service.service';
+import {SalesforceRestCalloutService} from '../../shared/services/salesforce-rest-callout.service';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -31,7 +31,7 @@ export class AppointmentCreationComponent {
   private readonly accessToken: string;
   private readonly accessCode: string;
 
-  constructor(private restService: SalesforceRESTcalloutServiceService,
+  constructor(private restService: SalesforceRestCalloutService,
               private messageService: MessageService) {
     this.accessCode = restService.getCodeFromURL();
     this.accessToken = restService.getToken();
@@ -42,7 +42,7 @@ export class AppointmentCreationComponent {
     } else if (this.accessCode) {
       restService.getTokens(this.accessCode).subscribe(next => console.log('Success of reg tokens operation!'));
     }
-    this.restService.brokeTheToken();
+
     this.headerString = 'Please, enter information below!';
     this.firstNameString = 'First Name';
     this.lastNameString = 'Last Name';
