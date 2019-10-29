@@ -56,7 +56,7 @@ export class AppointmentCreationComponent {
     this.errorMessage = 'Some error was acquired!';
   }
 
-  handleClick(event: Event, repeated: boolean = false): void {
+  handleClick(event: Event): void {
     if (this.checkDataValidation()) {
       const requestBody = '{' +
         '"client_first_name": "' + this.firstName + '",' +
