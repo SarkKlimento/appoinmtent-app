@@ -83,13 +83,13 @@ export class AppointmentCreationComponent {
             this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
           }
         }, error => {
-          if (!repeated && error.status === 400 || error.status === 401) {
+          if (!repeated && error.status === 400 || error.status === 401 || error.status === 0) {
             this.handleClick(event, true)
           }
           console.log(error);
         });
       }, error => {
-        if (!repeated && error.status === 400 || error.status === 401) {
+        if (!repeated && error.status === 400 || error.status === 401 || error.status === 0) {
           this.handleClick(event, true)
         }
         console.log(error);
