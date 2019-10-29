@@ -58,7 +58,7 @@ export class AppointmentCreationComponent {
 
   handleClick(event: Event, repeated: boolean = false): void {
     if (this.checkDataValidation()) {
-      this.restService.sendRequestToSalesforce('Appointments', '{' +
+      const requestBody = '{' +
         '"client_first_name": "' + this.firstName + '",' +
         '"client_last_name": "' + this.lastName + '",' +
         '"appointment_date": "' + this.appointmentDate.getFullYear() + '-' + this.appointmentDate.getMonth() + '-' +
@@ -66,31 +66,17 @@ export class AppointmentCreationComponent {
         '"start_time": "' + this.startTime.getHours() + ':' + this.startTime.getMinutes() + '",' +
         '"end_time": "' + this.endTime.getHours() + ':' + this.endTime.getMinutes() + '",' +
         '"account_name": "' + this.accountName + '"' +
-        '}', repeated
-      ).subscribe(observableRequest => {
-        observableRequest.subscribe(response => {
-          if (response['Status'] === 'Success') {
-            this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
-            this.firstName = '';
-            this.lastName = '';
-            this.appointmentDate = null;
-            this.startTime = null;
-            this.endTime = null;
-            this.accountName = '';
-          } else {
-            this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
-          }
-        }, error => {
-          if (!repeated && error.status === 400 || error.status === 401 || error.status === 0) {
-            this.handleClick(event, true)
-          }
-          console.log(error);
-        });
+        '}';
+
+      this.restService.sendRequestToSalesforce('Appointments', requestBody).subscribe(response => {
+        this.handleResponse(response);
       }, error => {
-        if (!repeated && error.status === 400 || error.status === 401 || error.status === 0) {
-          this.handleClick(event, true)
-        }
-        console.log(error);
+        this.restService.handleTokenError(error, 'Appointments', requestBody).subscribe(response => {
+          this.handleResponse(response);
+        }, error => {
+          console.error(error);
+          this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
+        });
       });
     } else {
       this.errorText = this.emptyFieldError;
@@ -106,5 +92,23 @@ export class AppointmentCreationComponent {
       (this.lastName && this.lastName.length > 0) &&
       this.appointmentDate && this.startTime && this.endTime &&
       (this.accountName && this.accountName.length > 0);
+  }
+
+  private handleResponse(response: any): void {
+    if (response['Status'] === 'Success') {
+      this.messageService.add({severity: 'success', summary: 'Service Message', detail: this.successMessage});
+      this.clearInputs();
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Service Message', detail: this.errorMessage});
+    }
+  }
+
+  private clearInputs(): void {
+    this.firstName = '';
+    this.lastName = '';
+    this.appointmentDate = null;
+    this.startTime = null;
+    this.endTime = null;
+    this.accountName = '';
   }
 }
