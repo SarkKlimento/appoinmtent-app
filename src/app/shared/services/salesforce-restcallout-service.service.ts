@@ -13,7 +13,7 @@ export class SalesforceRESTcalloutServiceService {
   private readonly proxyUrl: string; // URL of used proxy server to avoid CORS limits when using OAuth
   private readonly tokensCookieName: string;
 
-  private scopeParameters: Array<string> = ['full', 'refresh_token']; // full - gives us all beyond the refresh token, so refresh_token included
+  private scopeParameters: Array<string> = ['full', 'refresh_token']; // full - gives us all except the refresh token, so refresh_token included
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.consumerKey = '3MVG91BJr_0ZDQ4ts4wXWZjdsb6SUrhvlOJodd2MCjLiglKDaqpQrnEfOgMb8iluoTu8h8FknH7DB1ME1Hp7g';
@@ -112,7 +112,6 @@ export class SalesforceRESTcalloutServiceService {
             this.setTokensToCookie(accessToken);
           }
 
-          console.log('refeshed');
           observer.next(true);
         })
         .catch(e => {

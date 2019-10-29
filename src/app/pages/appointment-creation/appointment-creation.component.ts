@@ -35,8 +35,6 @@ export class AppointmentCreationComponent {
               private messageService: MessageService) {
     this.accessCode = restService.getCodeFromURL();
     this.accessToken = restService.getToken();
-    console.log('this.accessCode: ' + this.accessCode);
-    console.log('this.accessToken: ' + this.accessToken);
 
     if ((this.accessCode === null || this.accessCode === undefined || this.accessCode.length === 0) &&
       (this.accessToken === null || this.accessToken === undefined || this.accessToken.length === 0)) {
