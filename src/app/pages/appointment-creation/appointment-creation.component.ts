@@ -42,7 +42,7 @@ export class AppointmentCreationComponent {
     } else if (this.accessCode) {
       restService.getTokens(this.accessCode).subscribe(next => console.log('Success of reg tokens operation!'));
     }
-
+    this.restService.brokeTheToken();
     this.headerString = 'Please, enter information below!';
     this.firstNameString = 'First Name';
     this.lastNameString = 'Last Name';
