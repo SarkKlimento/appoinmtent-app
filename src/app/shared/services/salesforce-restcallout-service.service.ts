@@ -42,8 +42,8 @@ export class SalesforceRESTcalloutServiceService {
   authorize(): void {
     (new Promise((resolve, reject) => {
       let loginWindowURL = 'https://login.salesforce.com/services/oauth2/authorize?client_id='
-        + this.consumerKey +
-        '&redirect_uri=' + this.redirect_uri
+        + this.consumerKey
+        + '&redirect_uri=' + this.redirect_uri
         + '&response_type=code&scope=' + this.scopeParameters.join('%20');
       window.open(loginWindowURL, '_self');
 
@@ -55,10 +55,10 @@ export class SalesforceRESTcalloutServiceService {
   getTokens(code: string): Observable<Object> {
     return new Observable(observer => {
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
-        + this.consumerKey +
-        '&grant_type=authorization_code' +
-        '&redirect_uri=' + this.redirect_uri +
-        '&code=' + code;
+        + this.consumerKey
+        + '&grant_type=authorization_code'
+        + '&redirect_uri=' + this.redirect_uri
+        + '&code=' + code;
 
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
@@ -74,7 +74,7 @@ export class SalesforceRESTcalloutServiceService {
         })
         .catch(e => {
           console.log(e);
-          return e;
+          observer.error(e);
         });
     });
   }
@@ -85,10 +85,10 @@ export class SalesforceRESTcalloutServiceService {
 
     return new Observable(observer => {
       const tokenEndpoint = 'https://login.salesforce.com/services/oauth2/token?client_id='
-        + this.consumerKey +
-        '&grant_type=refresh_token' +
-        '&redirect_uri=' + this.redirect_uri +
-        '&refresh_token=' + refreshToken;
+        + this.consumerKey
+        + '&grant_type=refresh_token'
+        + '&redirect_uri=' + this.redirect_uri
+        + '&refresh_token=' + refreshToken;
 
       fetch(this.proxyUrl + tokenEndpoint)
         .then(blob => blob.json())
@@ -103,7 +103,7 @@ export class SalesforceRESTcalloutServiceService {
         })
         .catch(e => {
           console.log(e);
-          return e;
+          observer.error(e);
         });
     });
   }
@@ -121,11 +121,16 @@ export class SalesforceRESTcalloutServiceService {
     return decryptedTokens ? decryptedTokens['accessToken'] : null;
   }
 
-  //will re-return error if it not because of the token
+  //Called when error in request occurred
+  //Proceed an error and if it a token error - will get the new token and recall the initial request
+  //Will re-return error if it not because of the token
   private handleTokenError(error: any, endPoint: string, requestBody: any): Observable<Object> {
+    console.log('token error handling');
     return new Observable(observer => {
       if (error.status === 400 || error.status === 401 || error.status === 0) {
+        console.log('time to refresh');
         this.refreshTokens().subscribe(next => {
+          console.log('token refreshed');
           this.sendRequest(endPoint, requestBody).subscribe(next => observer.next(next), error => observer.error(error));
         }, error => observer.error(error));
       } else {
@@ -142,7 +147,7 @@ export class SalesforceRESTcalloutServiceService {
         'Accept': 'application/json'
       })
     };
-    
+
     return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
   }
 
