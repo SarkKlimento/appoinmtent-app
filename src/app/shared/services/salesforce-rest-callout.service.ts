@@ -123,7 +123,7 @@ export class SalesforceRestCalloutService {
 
   // DEBUG ONLY
   breakTokens() : void {
-    this.setTokensToCookie('N/A', 'N/A');
+    this.setTokensToCookie('N/A');
   }
 
   //Called when error in request occurred
