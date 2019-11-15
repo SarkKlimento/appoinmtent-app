@@ -132,6 +132,7 @@ export class SalesforceRestCalloutService {
   private handleTokenError(error: any, endPoint: string, requestBody: any): Observable<Object> {
     return new Observable(observer => {
       if (error.status === 400 || error.status === 401 || error.status === 0) {
+        console.log("We have a problem with token, captain!");
         this.refreshTokens().subscribe(next => {
           this.sendRequest(endPoint, requestBody).subscribe(next => observer.next(next), error => observer.error(error));
         }, error => observer.error(error));
@@ -150,6 +151,7 @@ export class SalesforceRestCalloutService {
       })
     };
 
+    console.log("Time to go into the space (Send request)");
     return this.http.post<Object>(this.baseEndpoint + endPoint, requestBody, httpOptions).pipe();
   }
 
@@ -160,6 +162,7 @@ export class SalesforceRestCalloutService {
   }
 
   private setTokensToCookie(accessToken: string, refreshToken?: string): void {
+    console.log('Set tokens to the печеньки');
     if (!refreshToken) {
       refreshToken = this.getRefreshToken();
     }
