@@ -79,6 +79,10 @@ export class AppointmentCreationComponent {
     }
   }
 
+  breakTokensCLick(event: Event): void {
+    this.restService.breakTokens();
+  }
+
   clearErrorMessage() {
     this.errorText = '';
   }

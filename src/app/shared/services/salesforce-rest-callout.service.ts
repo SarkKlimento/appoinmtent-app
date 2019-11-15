@@ -121,6 +121,11 @@ export class SalesforceRestCalloutService {
     return decryptedTokens ? decryptedTokens['accessToken'] : null;
   }
 
+  // DEBUG ONLY
+  breakTokens() : void {
+    this.setTokensToCookie('N/A', 'N/A');
+  }
+
   //Called when error in request occurred
   //Proceed an error and if it a token error - will get the new token and recall the initial request
   //Will re-return error if it not because of the token
